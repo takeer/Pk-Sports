@@ -1,11 +1,10 @@
-﻿@{
-    ViewBag.Title = "Categories";
-}
-
+﻿
 @{
-
-    var category = ViewBag.category;
+    ViewBag.Title = "Categories";
+    Layout = "~/Views/Shared/_AdminView.cshtml";
+    string[] categories = ViewBag.categories;
 }
+
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
@@ -17,23 +16,22 @@
         </div>
     </div>
     <div class="container">
-        @for (int k = 0, j = 0; k < category.Count @*&& j < categories.Length/4+1*@; j++)
+        @for (int k = 0, j = 0; k < categories.Length @*&& j < categories.Length/4+1*@; j++)
         {
             <div class="row">
-                @for (int i = 0; i < 4 && k < category.Count; i++, k++)
+                @for (int i = 0; i < 4 && k < categories.Length; i++, k++)
                 {
                     <div class="col-md-3">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4><i class="fa fa-fw fa-check"></i> @(category[i].Name)</h4>
+                                <h4><i class="fa fa-fw fa-check"></i> @(categories[i])</h4>
                             </div>
                             <div class="panel-body">
-                                <a href=@("/Home/ItemsOfACategory/?type=" + category[i].Name) class="thumbnail">
-                                    <img style="max-height:100px" src=@("/Images/" + i % category.Count + ".jpg") class="img-rounded">
+                                <a href=@("/Home/ItemsOfACategory/"+categories[i]) class="thumbnail">
+                                    <img style="max-height:100px" src=@("/Images/" + i % categories.Length + ".jpg") class="img-rounded">
                                 </a>
                                 <p>
-                                    <a href="@("/Home/ItemsOfACategory/?type=" + category[i]).Name" class="btn btn-primary">View More</a>
-                                    <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-heart"></span>&emsp;Like</a>
+                                    <a href="@("/Home/ItemsOfACategory/"+categories[i])" class="btn btn-primary">Show Items</a>
                                 </p>
                             </div>
                         </div>
@@ -43,8 +41,5 @@
         }
     </div>
 </div>
-
-
-
 
 

@@ -1,0 +1,75 @@
+﻿@{
+    Layout = null;
+}
+@{
+    ViewBag.Title = "Practice";
+
+}
+<!-- include Cycle plugin -->
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+    $(document).ready(function () {
+
+        $("#search").click(function () {
+            var minvalue = parseInt($('#minprice').val());
+            if ($.isNumeric(minvalue) == false)
+                minvalue = null;
+            var maxvalue = parseInt($('#maxprice').val());
+            if ($.isNumeric(maxvalue) == false)
+                maxvalue = null;
+            var catag = $('[name="Catag"]').val();
+
+            if (catag == "") {
+                $('[name="Catag"]').css('border-color', 'red');
+                $('[name="Catag"]').focus();
+                return false;
+            }
+
+            if (minvalue == NaN || minvalue == null || minvalue == "")
+                minprice = 0;
+            if (maxvalue == NaN || maxvalue == null || maxvalue == "")
+                maxval = 2147483647;
+
+            var lp1 = $('#minprice').val();
+            var hp1 = $('#maxprice').val();
+            catag = 1;
+
+            $.ajax({
+                url: "/Admin/Search?minvalue=" + minvalue + "&maxvalue=" + maxvalue + "&catag=" + catag,
+                dataType: 'JSON',
+                type: 'GET',
+                error: function () {
+                    alert("error")
+                },
+                success: function (result) {
+                    $("#p").html("Hello ali")
+                    $('#table1').html('<tr><td>aaaaaa</td></tr>');
+                 
+                }
+            });
+
+
+
+            //        $.getJSON('/Admin/Search?minvalue=' + minvalue + '&maxvalue=' + maxvalue + '&catag=' + catag, function (d) {
+            //          alert('scuues');
+            //    alert(d)
+            //    $.each(d, function (index) {
+            //        $('#table1').append(
+            //           '<tr><td>' + d[index].Name +
+            //           '</td><td>' + d[index].Price +
+            //           '</td></tr>');
+            //    });
+            //          });
+        })
+    })
+    </script>
+
+
+<table id="table1"></table>
+<p id="p">ali</p>
+<form id="searchform">
+    <input type="text" id="minprice" />
+    <input type="text" id="maxprice" />
+    <input type="button" id="search" />
+</form>

@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = null;
+    ViewBag.Title = "AjaxSearch";
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,19 +11,13 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @RenderSection("date", required: false)
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-
-    @RenderSection("search",required:false)
-
-
 
 
 </head>
-<body  style="background-color:white">
+<body class="row" style="background-color:white">
     @{
 
         var category = ViewBag.category;
@@ -179,11 +178,7 @@
     </div>
     @*Categories and renderbody()*@
 
-    <div>
-        <table id="table1">
-            
-        </table>
-    </div>
+
 
     <div class="row">
         <div class="col-lg-2">
@@ -213,8 +208,26 @@
                 </tr>
             </table>
         </div>
-        <div class="col-lg-10">
-            @RenderBody()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="container col-md-8" align="center">
+            <table class="table table-bordered" id="table1"></table>
         </div>
         <hr />
     </div>
@@ -289,7 +302,7 @@
 
 <script>
     $(document).ready(function () {
-        
+
         $("#search").click(function () {
 
             var minvalue = parseInt($('#minprice').val());
@@ -309,37 +322,35 @@
             if (minvalue == NaN || minvalue == null || minvalue == "")
                 minprice = 0;
             if (maxvalue == NaN || maxvalue == null || maxvalue == "")
-                maxval=2147483647;
+                maxval = 2147483647;
 
             var lp1 = $('#minprice').val();
             var hp1 = $('#maxprice').val();
-            
+
 
             $.ajax({
                 url: "/Admin/Search?minvalue=" + minvalue + "&maxvalue=" + maxvalue + "&catag=" + catag,
                 dataType: 'JSON',
                 type: 'GET',
                 error: function () {
-                    alert("error")
+                    alert("ubalbe to fetch data");
                 },
                 success: function (result) {
-                    $('#table1').html('<tr><td>aaaaaa</td></tr>');
-                    alert(result[0].Name)
+                    $("#table1").html("");
+                    $("#table1").append("<tr><th>Id</th><th>Name</th><th>Price</th><th>quantity</th></tr>")
+                    $.each(result, function (index) {
+                        $("#table1").append("<tr>"
+                            + "<td>" + result[index].Id + "</td>"
+                            + "<td>" + " Name " + result[index].Name + "</td>"
+                           + "<td>" + result[index].Price + "</td>"
+                           +"<td>"+result[index].Quantity +"</td>"
+                            +"</tr>");
+                    })
+                    
+
                 }
             });
 
-
-
-    //        $.getJSON('/Admin/Search?minvalue=' + minvalue + '&maxvalue=' + maxvalue + '&catag=' + catag, function (d) {
-      //          alert('scuues');
-            //    alert(d)
-            //    $.each(d, function (index) {
-            //        $('#table1').append(
-            //           '<tr><td>' + d[index].Name +
-            //           '</td><td>' + d[index].Price +
-            //           '</td></tr>');
-            //    });
- //          });
         })
     })
 </script>
